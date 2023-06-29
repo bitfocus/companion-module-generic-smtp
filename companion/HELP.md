@@ -27,7 +27,7 @@ Please follow the guides on how to set up SMTP for your email service.
 - **Port _(required)_**  
   The port on the SMTP server (usually 25 or 587)
 - **Secure _(required)_**  
-  Yes if the server uses SSL or TLS
+  Yes if the server uses SSL
 - **Name of sender _(required)_**  
   The name under which the emails from Companion should be sent
 - **Address _(required)_**  
