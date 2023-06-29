@@ -83,8 +83,7 @@ export function UpdateActions(self: InstanceBase<DeviceConfig>) {
 				if (self.status != InstanceStatus.Ok) {
 					self.updateStatus(InstanceStatus.Ok)
 				}
-				self.sendEmail(mailContent)
-				.catch((e: string) => {
+				self.sendEmail(mailContent).catch((e: string) => {
 					self.log('error', `an error occured while sending the email: ${e}`)
 					self.updateStatus(InstanceStatus.ConnectionFailure)
 				})

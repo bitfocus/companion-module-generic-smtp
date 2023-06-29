@@ -13,7 +13,7 @@ class SMTPInstance extends InstanceBase<DeviceConfig> {
 	constructor(internal: unknown) {
 		super(internal)
 		this.config = {}
-		this.status = ""
+		this.status = ''
 	}
 
 	/**
