@@ -5,8 +5,8 @@
 	"description": "Generic SMTP",
 	"version": "0.0.1",
 	"license": "MIT",
-	"repository": "git+https://github.com/hartmann-jonas/companion-module-generic-smtp.git",
-	"bugs": "https://github.com/hartmann-jonas/companion-module-generic-smtp/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-generic-smtp.git",
+	"bugs": "https://github.com/bitfocus/companion-module-generic-smtp/issues",
 	"maintainers": [
 		{
 			"name": "Jonas Hartmann",
