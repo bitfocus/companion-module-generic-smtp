@@ -1,7 +1,7 @@
 {
 	"id": "generic-smtp",
 	"name": "generic-smtp",
-	"shortname": "generic-smtp",
+	"shortname": "smtp",
 	"description": "Generic SMTP",
 	"version": "1.0.0",
 	"license": "MIT",
