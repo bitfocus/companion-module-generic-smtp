@@ -3,7 +3,7 @@
 	"name": "generic-smtp",
 	"shortname": "generic-smtp",
 	"description": "Generic SMTP",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-generic-smtp.git",
 	"bugs": "https://github.com/bitfocus/companion-module-generic-smtp/issues",
