@@ -1,18 +1,24 @@
 import { InstanceBase, InstanceStatus, runEntrypoint, SomeCompanionConfigField } from '@companion-module/base'
 import { UpdateActions, Mail } from './actions'
-import { DeviceConfig, GetConfigFields } from './config'
-import { UpgradeScripts } from './upgrades'
+import { SMTPConfig, GetConfigFields } from './config'
 import { UpdateVariableDefinitions } from './variables'
 
 import nodemailer, { SendMailOptions } from 'nodemailer'
 
-class SMTPInstance extends InstanceBase<DeviceConfig> {
-	private config: DeviceConfig
-	private status: string
+export class SMTPInstance extends InstanceBase<SMTPConfig> {
+	private config: SMTPConfig
+	status: string
 
 	constructor(internal: unknown) {
 		super(internal)
-		this.config = {}
+		this.config = {
+			host: '',
+			port: 465,
+			secure: true,
+			name: '',
+			user: '',
+			password: '',
+		}
 		this.status = ''
 	}
 
@@ -20,7 +26,7 @@ class SMTPInstance extends InstanceBase<DeviceConfig> {
 	 * Main initialization function called once the module
 	 * is OK to start doing things.
 	 */
-	public async init(config: DeviceConfig): Promise<void> {
+	public async init(config: SMTPConfig): Promise<void> {
 		this.updateStatus(InstanceStatus.Connecting)
 		this.config = config
 
@@ -29,13 +35,15 @@ class SMTPInstance extends InstanceBase<DeviceConfig> {
 
 		this.updateActions()
 		this.updateVariableDefinitions()
+		return Promise.resolve()
 	}
 
 	/**
 	 * Process an updated configuration array.
 	 */
-	async configUpdated(config: DeviceConfig) {
+	async configUpdated(config: SMTPConfig): Promise<void> {
 		this.config = config
+		return Promise.resolve()
 	}
 
 	/**
@@ -50,17 +58,18 @@ class SMTPInstance extends InstanceBase<DeviceConfig> {
 	 */
 	public async destroy(): Promise<void> {
 		this.log('debug', `destroy ${this.id}`)
+		return Promise.resolve()
 	}
 
-	updateActions() {
+	updateActions(): void {
 		UpdateActions(this)
 	}
 
-	updateVariableDefinitions() {
+	updateVariableDefinitions(): void {
 		UpdateVariableDefinitions(this)
 	}
 
-	public async sendEmail(mail: Mail) {
+	async sendEmail(mail: Mail): Promise<void> {
 		const transporter = nodemailer.createTransport({
 			host: String(this.config.host),
 			port: Number(this.config.port),
@@ -71,7 +80,7 @@ class SMTPInstance extends InstanceBase<DeviceConfig> {
 			},
 		})
 
-		let mailDescription: SendMailOptions = {
+		const mailDescription: SendMailOptions = {
 			from: `${this.config.name} <${this.config.user}>`,
 			to: mail.recipient,
 			subject: mail.subject,
@@ -91,9 +100,8 @@ class SMTPInstance extends InstanceBase<DeviceConfig> {
 		}
 
 		const info = await transporter.sendMail(mailDescription)
-		console.log(info)
 		this.log('debug', `email send successfully: ${info.response}`)
 	}
 }
 
-runEntrypoint(SMTPInstance, UpgradeScripts)
+runEntrypoint(SMTPInstance, [])

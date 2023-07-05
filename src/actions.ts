@@ -1,16 +1,16 @@
-import { InstanceBase, InstanceStatus } from '@companion-module/base'
-import { DeviceConfig } from './config'
+import { InstanceStatus } from '@companion-module/base'
+import { SMTPInstance } from './index'
 
 export interface Mail {
 	recipient?: string
 	cc?: string
 	bcc?: string
-	subject: string
-	message: string
+	subject?: string
+	message?: string
 	replyTo?: string
 }
 
-export function UpdateActions(self: InstanceBase<DeviceConfig>) {
+export function UpdateActions(self: SMTPInstance): void {
 	self.setActionDefinitions({
 		sendMail: {
 			name: 'Send email',
@@ -51,42 +51,46 @@ export function UpdateActions(self: InstanceBase<DeviceConfig>) {
 			],
 			callback: async (event): Promise<void> => {
 				const mailContent = event.options
+				if (typeof mailContent.subject === 'string' && typeof mailContent.message === 'string') {
+					mailContent.subject = await self.parseVariablesInString(mailContent.subject)
+					mailContent.message = await self.parseVariablesInString(mailContent.message)
 
-				mailContent.subject = await self.parseVariablesInString(mailContent.subject)
-				mailContent.message = await self.parseVariablesInString(mailContent.message)
+					if (mailContent.recipient && typeof mailContent.recipient === 'string') {
+						mailContent.recipient = mailContent.recipient.split(',')
+					} else {
+						delete mailContent.recipient
+					}
 
-				if (mailContent.recipient) {
-					mailContent.recipient = mailContent.recipient.split(',')
+					if (mailContent.cc && typeof mailContent.cc === 'string') {
+						mailContent.cc = await self.parseVariablesInString(mailContent.cc)
+						mailContent.cc = mailContent.cc.split(',')
+					} else {
+						delete mailContent.cc
+					}
+
+					if (mailContent.bcc && typeof mailContent.bcc === 'string') {
+						mailContent.bcc = await self.parseVariablesInString(mailContent.bcc)
+						mailContent.bcc = mailContent.bcc.split(',')
+					} else {
+						delete mailContent.bcc
+					}
+
+					if (mailContent.replyTo && typeof mailContent.replyTo === 'string') {
+						mailContent.replyTo = await self.parseVariablesInString(mailContent.replyTo)
+					} else {
+						delete mailContent.replyTo
+					}
+					if (self.status != InstanceStatus.Ok) {
+						self.updateStatus(InstanceStatus.Ok)
+					}
+
+					self.sendEmail(mailContent).catch((e: string) => {
+						self.log('error', `an error occured while sending the email: ${e}`)
+						self.updateStatus(InstanceStatus.ConnectionFailure)
+					})
 				} else {
-					delete mailContent.recipient
+					self.log('error', 'an error occured when calling the action')
 				}
-
-				if (mailContent.cc) {
-					mailContent.cc = await self.parseVariablesInString(mailContent.cc)
-					mailContent.cc = mailContent.cc.split(',')
-				} else {
-					delete mailContent.cc
-				}
-
-				if (mailContent.bcc) {
-					mailContent.bcc = await self.parseVariablesInString(mailContent.bcc)
-					mailContent.bcc = mailContent.bcc.split(',')
-				} else {
-					delete mailContent.bcc
-				}
-
-				if (mailContent.replyTo) {
-					mailContent.replyTo = await self.parseVariablesInString(mailContent.replyTo)
-				} else {
-					delete mailContent.replyTo
-				}
-				if (self.status != InstanceStatus.Ok) {
-					self.updateStatus(InstanceStatus.Ok)
-				}
-				self.sendEmail(mailContent).catch((e: string) => {
-					self.log('error', `an error occured while sending the email: ${e}`)
-					self.updateStatus(InstanceStatus.ConnectionFailure)
-				})
 			},
 		},
 	})

@@ -1,6 +1,6 @@
 import { SomeCompanionConfigField } from '@companion-module/base'
 
-export interface DeviceConfig {
+export interface SMTPConfig {
 	host: string
 	port: number
 	secure: boolean

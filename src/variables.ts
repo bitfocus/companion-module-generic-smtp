@@ -1,7 +1,7 @@
 import { CompanionVariableDefinition, InstanceBase } from '@companion-module/base'
-import { DeviceConfig } from './config'
+import { SMTPConfig } from './config'
 
-export function UpdateVariableDefinitions(instance: InstanceBase<DeviceConfig>): void {
+export function UpdateVariableDefinitions(instance: InstanceBase<SMTPConfig>): void {
 	const variables: CompanionVariableDefinition[] = [
 		//{ variableId: 'variable1', name: 'My first variable' }
 	]
