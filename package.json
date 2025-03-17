@@ -1,15 +1,17 @@
 {
 	"name": "generic-smtp",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"main": "dist/index.js",
 	"scripts": {
 		"prepare": "husky install",
 		"build": "rimraf dist && yarn build:main",
 		"build:main": "tsc -p tsconfig.build.json",
 		"dev": "tsc -p tsconfig.build.json --watch",
-		"lint:raw": "eslint --ext .ts --ext .js --ignore-pattern dist --ignore-pattern pkg",
+		"lint:raw": "eslint",
 		"lint": "yarn lint:raw .",
-		"format": "prettier -w ."
+		"format": "prettier -w .",
+		"dist": "yarn companion-module-build",
+		"package": "rimraf dist && yarn build:main && yarn dist"
 	},
 	"license": "MIT",
 	"prettier": "@companion-module/tools/.prettierrc.json",
@@ -22,24 +24,27 @@
 		]
 	},
 	"engines": {
-		"node": "^18.12"
+		"node": "^22.13"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.0.2",
-		"nodemailer": "^6.9.9"
+		"@companion-module/base": "~1.11.3",
+		"nodemailer": "^6.10.0"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^0.4.1",
-		"@types/node": "^18.11.9",
-		"@types/ws": "^8.5.3",
-		"@types/nodemailer": "^6.4.8",
-		"husky": "^8.0.1",
-		"lint-staged": "^13.0.3",
-		"rimraf": "^3.0.2",
-		"typescript": "~4.9"
+		"@companion-module/tools": "^2.2.2",
+		"@types/node": "^22.13.10",
+		"@types/nodemailer": "^6.4.17",
+		"@types/ws": "^8.18.0",
+		"eslint": "^9.22.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.5.0",
+		"prettier": "^3.5.3",
+		"rimraf": "^6.0.1",
+		"typescript": "~5.8.2"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/bitfocus/companion-module-generic-smtp.git"
-	}
+	},
+	"packageManager": "yarn@4.7.0"
 }
