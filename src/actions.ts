@@ -62,6 +62,7 @@ export function UpdateActions(self: SMTPInstance): void {
 					mailContent.message = await context.parseVariablesInString(mailContent.message)
 
 					if (mailContent.recipient && typeof mailContent.recipient === 'string') {
+						mailContent.recipient = await context.parseVariablesInString(mailContent.recipient)
 						mailContent.recipient = mailContent.recipient.split(',')
 					} else {
 						delete mailContent.recipient
