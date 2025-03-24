@@ -20,63 +20,70 @@ export function UpdateActions(self: SMTPInstance): void {
 					type: 'textinput',
 					id: 'recipient',
 					label: 'Recipient',
+					useVariables: { local: true },
 				},
 				{
 					type: 'textinput',
 					id: 'replyTo',
 					label: 'Reply-to',
+					useVariables: { local: true },
 				},
 				{
 					type: 'textinput',
 					id: 'cc',
 					label: 'CC',
+					useVariables: { local: true },
 				},
 				{
 					type: 'textinput',
 					id: 'bcc',
 					label: 'BCC',
+					useVariables: { local: true },
 				},
 				{
 					type: 'textinput',
 					id: 'subject',
 					label: 'Subject',
 					required: true,
+					useVariables: { local: true },
 				},
 				{
 					type: 'textinput',
 					id: 'message',
 					label: 'Message',
 					required: true,
+					useVariables: { local: true },
 				},
 			],
-			callback: async (event): Promise<void> => {
+			callback: async (event, context): Promise<void> => {
 				const mailContent = event.options
 				if (typeof mailContent.subject === 'string' && typeof mailContent.message === 'string') {
-					mailContent.subject = await self.parseVariablesInString(mailContent.subject)
-					mailContent.message = await self.parseVariablesInString(mailContent.message)
+					mailContent.subject = await context.parseVariablesInString(mailContent.subject)
+					mailContent.message = await context.parseVariablesInString(mailContent.message)
 
 					if (mailContent.recipient && typeof mailContent.recipient === 'string') {
+						mailContent.recipient = await context.parseVariablesInString(mailContent.recipient)
 						mailContent.recipient = mailContent.recipient.split(',')
 					} else {
 						delete mailContent.recipient
 					}
 
 					if (mailContent.cc && typeof mailContent.cc === 'string') {
-						mailContent.cc = await self.parseVariablesInString(mailContent.cc)
+						mailContent.cc = await context.parseVariablesInString(mailContent.cc)
 						mailContent.cc = mailContent.cc.split(',')
 					} else {
 						delete mailContent.cc
 					}
 
 					if (mailContent.bcc && typeof mailContent.bcc === 'string') {
-						mailContent.bcc = await self.parseVariablesInString(mailContent.bcc)
+						mailContent.bcc = await context.parseVariablesInString(mailContent.bcc)
 						mailContent.bcc = mailContent.bcc.split(',')
 					} else {
 						delete mailContent.bcc
 					}
 
 					if (mailContent.replyTo && typeof mailContent.replyTo === 'string') {
-						mailContent.replyTo = await self.parseVariablesInString(mailContent.replyTo)
+						mailContent.replyTo = await context.parseVariablesInString(mailContent.replyTo)
 					} else {
 						delete mailContent.replyTo
 					}

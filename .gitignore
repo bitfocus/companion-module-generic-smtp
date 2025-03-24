@@ -1,5 +1,7 @@
 node_modules
+.yarn/*
 /dist
 /pkg
 pkg.tgz
+generic-smtp-*.tgz
 DEBUG-PACKAGED
