@@ -20,6 +20,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig> {
 			password: '',
 		}
 		this.status = ''
+		process.title = this.label
 	}
 
 	/**
@@ -27,7 +28,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig> {
 	 * is OK to start doing things.
 	 */
 	public async init(config: SMTPConfig): Promise<void> {
-		this.updateStatus(InstanceStatus.Connecting)
+		process.title = this.label
 		this.config = config
 
 		this.updateStatus(InstanceStatus.Ok)
