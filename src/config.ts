@@ -46,10 +46,11 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			width: 6,
 		},
 		{
-			type: 'textinput',
+			type: 'secret-text',
 			id: 'password',
 			label: 'Password',
 			width: 6,
+			required: false,
 		},
 	]
 }

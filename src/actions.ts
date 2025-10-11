@@ -21,6 +21,7 @@ export function UpdateActions(self: SMTPInstance): void {
 					id: 'recipient',
 					label: 'Recipient',
 					useVariables: { local: true },
+					multiline: true,
 				},
 				{
 					type: 'textinput',
@@ -33,12 +34,14 @@ export function UpdateActions(self: SMTPInstance): void {
 					id: 'cc',
 					label: 'CC',
 					useVariables: { local: true },
+					multiline: true,
 				},
 				{
 					type: 'textinput',
 					id: 'bcc',
 					label: 'BCC',
 					useVariables: { local: true },
+					multiline: true,
 				},
 				{
 					type: 'textinput',
@@ -53,45 +56,39 @@ export function UpdateActions(self: SMTPInstance): void {
 					label: 'Message',
 					required: true,
 					useVariables: { local: true },
+					multiline: true,
 				},
 			],
-			callback: async (event, context): Promise<void> => {
+			callback: async (event, _context): Promise<void> => {
 				const mailContent = event.options
 				if (typeof mailContent.subject === 'string' && typeof mailContent.message === 'string') {
-					mailContent.subject = await context.parseVariablesInString(mailContent.subject)
-					mailContent.message = await context.parseVariablesInString(mailContent.message)
-
 					if (mailContent.recipient && typeof mailContent.recipient === 'string') {
-						mailContent.recipient = await context.parseVariablesInString(mailContent.recipient)
 						mailContent.recipient = mailContent.recipient.split(',')
 					} else {
 						delete mailContent.recipient
 					}
 
 					if (mailContent.cc && typeof mailContent.cc === 'string') {
-						mailContent.cc = await context.parseVariablesInString(mailContent.cc)
 						mailContent.cc = mailContent.cc.split(',')
 					} else {
 						delete mailContent.cc
 					}
 
 					if (mailContent.bcc && typeof mailContent.bcc === 'string') {
-						mailContent.bcc = await context.parseVariablesInString(mailContent.bcc)
 						mailContent.bcc = mailContent.bcc.split(',')
 					} else {
 						delete mailContent.bcc
 					}
 
-					if (mailContent.replyTo && typeof mailContent.replyTo === 'string') {
-						mailContent.replyTo = await context.parseVariablesInString(mailContent.replyTo)
-					} else {
+					if (!mailContent.replyTo) {
 						delete mailContent.replyTo
 					}
 					if (self.status != InstanceStatus.Ok) {
 						self.updateStatus(InstanceStatus.Ok)
+						self.status = InstanceStatus.Ok
 					}
 
-					self.sendEmail(mailContent).catch((e: string) => {
+					await self.sendEmail(mailContent).catch((e: string) => {
 						self.log('error', `an error occured while sending the email: ${e}`)
 						self.updateStatus(InstanceStatus.ConnectionFailure)
 					})
