@@ -6,6 +6,9 @@ export interface SMTPConfig {
 	secure: boolean
 	name: string
 	user: string
+}
+
+export interface SMTPSecrets {
 	password: string
 }
 

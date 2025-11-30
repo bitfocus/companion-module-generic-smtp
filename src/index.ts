@@ -1,13 +1,14 @@
 import { InstanceBase, InstanceStatus, runEntrypoint, SomeCompanionConfigField } from '@companion-module/base'
 import { UpdateActions, Mail } from './actions'
-import { SMTPConfig, GetConfigFields } from './config'
+import { type SMTPConfig, type SMTPSecrets, GetConfigFields } from './config'
 import { UpdateVariableDefinitions } from './variables'
 
 import nodemailer, { SendMailOptions } from 'nodemailer'
 
-export class SMTPInstance extends InstanceBase<SMTPConfig> {
+export class SMTPInstance extends InstanceBase<SMTPConfig, SMTPSecrets> {
 	private config: SMTPConfig
-	status: string
+	private secrets: SMTPSecrets
+	status: InstanceStatus
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -17,9 +18,9 @@ export class SMTPInstance extends InstanceBase<SMTPConfig> {
 			secure: true,
 			name: '',
 			user: '',
-			password: '',
 		}
-		this.status = ''
+		this.secrets = { password: '' }
+		this.status = InstanceStatus.Connecting
 		process.title = this.label
 	}
 
@@ -27,9 +28,10 @@ export class SMTPInstance extends InstanceBase<SMTPConfig> {
 	 * Main initialization function called once the module
 	 * is OK to start doing things.
 	 */
-	public async init(config: SMTPConfig): Promise<void> {
+	public async init(config: SMTPConfig, _isFirstInit: boolean, secrets: SMTPSecrets): Promise<void> {
 		process.title = this.label
 		this.config = config
+		this.secrets = secrets
 
 		this.updateStatus(InstanceStatus.Ok)
 		this.status = InstanceStatus.Ok
@@ -42,8 +44,9 @@ export class SMTPInstance extends InstanceBase<SMTPConfig> {
 	/**
 	 * Process an updated configuration array.
 	 */
-	async configUpdated(config: SMTPConfig): Promise<void> {
+	async configUpdated(config: SMTPConfig, secrets: SMTPSecrets): Promise<void> {
 		this.config = config
+		this.secrets = secrets
 		return Promise.resolve()
 	}
 
@@ -77,7 +80,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig> {
 			secure: Boolean(this.config.secure),
 			auth: {
 				user: String(this.config.user),
-				pass: String(this.config.password),
+				pass: String(this.secrets.password),
 			},
 		})
 
