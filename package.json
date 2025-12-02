@@ -28,7 +28,7 @@
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.13.2",
-		"nodemailer": "^7.0.6"
+		"nodemailer": "^7.0.11"
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.4.0",
