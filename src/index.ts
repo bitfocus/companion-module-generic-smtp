@@ -1,6 +1,7 @@
 import { InstanceBase, InstanceStatus, runEntrypoint, SomeCompanionConfigField } from '@companion-module/base'
 import { UpdateActions, Mail } from './actions'
 import { type SMTPConfig, type SMTPSecrets, GetConfigFields } from './config'
+import { UpgradeScripts } from './upgrades'
 import { UpdateVariableDefinitions } from './variables'
 
 import nodemailer, { SendMailOptions } from 'nodemailer'
@@ -108,4 +109,4 @@ export class SMTPInstance extends InstanceBase<SMTPConfig, SMTPSecrets> {
 	}
 }
 
-runEntrypoint(SMTPInstance, [])
+runEntrypoint(SMTPInstance, UpgradeScripts)
