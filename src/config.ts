@@ -6,6 +6,18 @@ export interface SMTPConfig {
 	secure: boolean
 	name: string
 	user: string
+}
+
+export interface OldSMTPConfig {
+	host: string
+	port: number
+	secure: boolean
+	password: string
+	name: string
+	user: string
+}
+
+export interface SMTPSecrets {
 	password: string
 }
 
