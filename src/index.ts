@@ -19,6 +19,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig, SMTPSecrets> {
 			secure: true,
 			name: '',
 			user: '',
+			address: '',
 		}
 		this.secrets = { password: '' }
 		this.status = InstanceStatus.Connecting
@@ -84,7 +85,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig, SMTPSecrets> {
 		})
 
 		const mailDescription: SendMailOptions = {
-			from: `${this.config.name} <${this.config.user}>`,
+			from: `${this.config.name} <${this.config.address}>`,
 			to: mail.recipient,
 			subject: mail.subject,
 			html: mail.message,

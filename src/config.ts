@@ -6,6 +6,7 @@ export interface SMTPConfig {
 	secure: boolean
 	name: string
 	user: string
+	address: string
 }
 
 export interface OldSMTPConfig {
@@ -54,6 +55,12 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 		{
 			type: 'textinput',
 			id: 'user',
+			label: 'user',
+			width: 6,
+		},
+		{
+			type: 'textinput',
+			id: 'address',
 			label: 'Address',
 			width: 6,
 		},
