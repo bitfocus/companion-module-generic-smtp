@@ -18,6 +18,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig, SMTPSecrets> {
 			port: 465,
 			secure: true,
 			name: '',
+			specifyUser: false,
 			user: '',
 			address: '',
 		}
@@ -79,7 +80,7 @@ export class SMTPInstance extends InstanceBase<SMTPConfig, SMTPSecrets> {
 			port: Number(this.config.port),
 			secure: Boolean(this.config.secure),
 			auth: {
-				user: String(this.config.user),
+				user: this.config.specifyUser ? String(this.config.user) : String(this.config.address),
 				pass: String(this.secrets.password),
 			},
 		})
