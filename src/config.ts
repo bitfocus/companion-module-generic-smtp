@@ -5,7 +5,9 @@ export interface SMTPConfig {
 	port: number
 	secure: boolean
 	name: string
+	specifyUser: boolean
 	user: string
+	address: string
 }
 
 export interface OldSMTPConfig {
@@ -52,8 +54,23 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			width: 12,
 		},
 		{
+			type: 'checkbox',
+			id: 'specifyUser',
+			label: 'Specify separate user',
+			tooltip: 'if user needs to be different from address for authentication',
+			default: false,
+			width: 6,
+		},
+		{
 			type: 'textinput',
 			id: 'user',
+			label: 'User',
+			width: 6,
+			isVisible: (config) => config.specifyUser === true,
+		},
+		{
+			type: 'textinput',
+			id: 'address',
 			label: 'Address',
 			width: 6,
 		},
