@@ -2516,7 +2516,7 @@ __metadata:
     eslint: "npm:^9.39.2"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.2.7"
-    nodemailer: "npm:^7.0.12"
+    nodemailer: "npm:^9.0.1"
     prettier: "npm:^3.7.4"
     rimraf: "npm:^6.1.2"
     typescript: "npm:~5.9.3"
@@ -3043,10 +3043,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^7.0.12":
-  version: 7.0.12
-  resolution: "nodemailer@npm:7.0.12"
-  checksum: 10c0/b03948744423386b5fd7cb5bdf60797f2f71c4d3db202eedf7e0037429b5887cb90b641e7ca244af3b96e0b76949e3135cba96336fb0d3ade00ae33727ca8cf8
+"nodemailer@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "nodemailer@npm:9.0.1"
+  checksum: 10c0/4213f01aa211127c1ce33243c5e45e7f831601a933d03fa864cd827b1bd5ea2782cb4b43722bee7028cbc193733d9802dad1120fe67181448eb0b7de52218a37
   languageName: node
   linkType: hard
 
